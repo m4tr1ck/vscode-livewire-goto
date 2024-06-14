@@ -30,6 +30,11 @@
 					"type": "string",
 					"default": "/app/Livewire",
 					"description": "Root path to the Livewire components folder"
+				},
+				"livewire-goto-updated-3.pathViews": {
+					"type": "string",
+					"default": "/resources/views/livewire",
+					"description": "Root path to the Livewire views folder"
 				}
 			}
 		}

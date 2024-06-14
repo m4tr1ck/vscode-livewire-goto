@@ -52,3 +52,16 @@ export function convertToFilePath(wsPath:string, s: string): string {
 
     return wsPath + pathComponents + s;
 }
+
+export function convertToBladeFilePath(wsPath:string, s: string): string {
+    // s = (s.replace(/-./g, x=>x[1].toUpperCase())).replace(/\../g, x=>'/' + x[1].toUpperCase());
+    s = s + ".blade.php";
+    
+    let pathViews = workspace.getConfiguration('livewire-goto-updated-3').pathViews;
+
+    if (!pathViews.endsWith('/')) {
+        pathViews += '/';
+    }
+
+    return wsPath + pathViews + s;
+}
