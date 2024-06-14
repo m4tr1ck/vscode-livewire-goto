@@ -8,11 +8,11 @@ export default class HoverProvider implements vsHoverProvider {
 	provideHover(document: TextDocument, position: Position): ProviderResult<Hover> {
 		let ranges = document.getWordRangeAtPosition(position, util.regexJumpFile);
 
-		if (!ranges) return;
+		if (!ranges) {return;}
 
 		const wsPath = workspace.getWorkspaceFolder(document.uri)?.uri.fsPath;
 
-		if (!wsPath) return;
+		if (!wsPath){ return;}
 
 		// const cacheMap = util.getLivewireCacheMap(wsPath);
 
