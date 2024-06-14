@@ -40,12 +40,16 @@
 		}
 	},
 	"scripts": {
-		"vscode:prepublish": "yarn run compile",
+		"vscode:prepublish": "pnpm run compile",
+		"vsce:package": "vsce package",
+		"vsce:publish": "pnpm package && pnpm package && vsce publish",
 		"compile": "tsc -p ./",
 		"lint": "eslint src --ext ts",
 		"watch": "tsc -watch -p ./",
-		"pretest": "yarn run compile && yarn run lint",
-		"test": "node ./out/test/runTest.js"
+		"pretest": "pnpm run compile && pnpm run lint",
+		"test": "node ./out/test/runTest.js",
+		"install-act": "wget https://github.com/nektos/act/releases/download/v0.2.24/act_Linux_x86_64.tar.gz -O /tmp/act_Linux_x86_64.tar.gz && tar zxvf /tmp/act_Linux_x86_64.tar.gz /tmp && sudo mv /tmp/act /usr/local/bin",
+		"act:exec": "act -P ubuntu-latest=node:20"
 	},
 	"devDependencies": {
 		"@types/glob": "^8.0",
