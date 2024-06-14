@@ -1,4 +1,4 @@
-name: test build 
+name: test build
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ 18.12.1 ]
+        node: [18.12.1]
 
     steps:
       - uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
           run_install: false
 
       - name: Install dependencies
-        run: npm i -g @vscode/vsce && npm i 
+        run: npm i -g @vscode/vsce && npm i
 
       - name: Run scripts
         run: |
@@ -43,5 +43,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: build-artifact
-          path: "livewire-goto-updated*"
-    
+          path: 'livewire-goto-updated*'
