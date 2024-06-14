@@ -22,13 +22,13 @@ export default class HoverProvider implements vsHoverProvider {
 		for (const match of matches) {
 			const matchedPath = match[3];
             
-			const jumpClassPath = util.convertToFilePath(wsPath, matchedPath);
-			const jumpClassPathShow = jumpClassPath.replace(wsPath + '/', '');
+			const jumpComponentPath = util.convertToComponentFilePath(wsPath, matchedPath);
+			const jumpComponentPathShow = jumpComponentPath.replace(wsPath + '/', '');
 
-			const jumpBladePath = util.convertToBladeFilePath(wsPath, matchedPath);
-			const jumpBladePathShow = jumpBladePath.replace(wsPath + '/', '');
+			const jumpViewPath = util.convertToViewFilePath(wsPath, matchedPath);
+			const jumpViewPathShow = jumpViewPath.replace(wsPath + '/', '');
 
-			const markdown = [`\`class:\` [${jumpClassPathShow}](${jumpClassPath}) \n`, `\`blade:\` [${jumpBladePathShow}](${jumpBladePath}) \n`].join(' ');
+			const markdown = [`\`class:\` [${jumpComponentPathShow}](${jumpComponentPath}) \n`, `\`blade:\` [${jumpViewPathShow}](${jumpViewPath}) \n`].join(' ');
 
 			return new Hover(new MarkdownString(markdown));
 		}

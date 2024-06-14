@@ -7,6 +7,12 @@ import * as util from '../util';
 
 export default class DocumentLinkProvider implements vsDocumentLinkProvider {
     provideDocumentLinks(document: TextDocument): ProviderResult<DocumentLink[]> {
+        let res: (arg0: DocumentLink[]) => void; 
+        let rej;
+        let promiseDocumentLinks = new Promise<typeof documentLinks>((_res,_rej)=>{
+            ;[res,rej]=[_res,_rej];
+        });
+
         let documentLinks: DocumentLink[] = [];
 
         const wsPath = workspace.getWorkspaceFolder(document.uri)?.uri.fsPath;
@@ -27,18 +33,24 @@ export default class DocumentLinkProvider implements vsDocumentLinkProvider {
                 );
                 const endColumn = startColumn.translate(0, matchedPath.length);
 
-                const jumpPath = util.convertToFilePath(wsPath, matchedPath);
+                const jumpComponentPath = util.convertToComponentFilePath(wsPath, matchedPath);
+                
+                workspace.findFiles(jumpComponentPath).then((foundComponents) => {
+                    if (foundComponents?.length) {
+                        documentLinks.push(new DocumentLink(new Range(startColumn, endColumn), Uri.file(jumpComponentPath)));
+                    } else {
+                        const jumpViewPath = util.convertToViewFilePath(wsPath, matchedPath);
+                        documentLinks.push(new DocumentLink(new Range(startColumn, endColumn), Uri.file(jumpViewPath)));
+                    }
 
-                if (jumpPath == undefined) continue;
+                    res(documentLinks);
+                    return;
+                });
+                
 
-                documentLinks.push(
-                    new DocumentLink(
-                        new Range(startColumn, endColumn), Uri.file(jumpPath),
-                    )
-                );
             }
         }
 
-        return documentLinks;
+        return promiseDocumentLinks;
     }
 }

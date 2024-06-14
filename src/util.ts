@@ -40,7 +40,7 @@ export function convertNamespaceToFilePath(namespace: string): string {
     return namespace + '.php';
 }
 
-export function convertToFilePath(wsPath:string, s: string): string {
+export function convertToComponentFilePath(wsPath:string, s: string): string {
     s = (s.replace(/-./g, x=>x[1].toUpperCase())).replace(/\../g, x=>'/' + x[1].toUpperCase());
     s = s[0].toUpperCase() + s.substring(1) + ".php";
     
@@ -53,8 +53,7 @@ export function convertToFilePath(wsPath:string, s: string): string {
     return wsPath + pathComponents + s;
 }
 
-export function convertToBladeFilePath(wsPath:string, s: string): string {
-    // s = (s.replace(/-./g, x=>x[1].toUpperCase())).replace(/\../g, x=>'/' + x[1].toUpperCase());
+export function convertToViewFilePath(wsPath:string, s: string): string {
     s = s + ".blade.php";
     
     let pathViews = workspace.getConfiguration('livewire-goto-updated-3').pathViews;
