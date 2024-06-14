@@ -1,0 +1,25 @@
+
+{
+    "base_branches": ["main", "master"],
+    "bump_files": [
+      {
+        "path": "Cargo.toml",
+        "prefix": "version = \""
+      }
+    ],
+    "categories": [
+      {
+        "labels": ["fix", "bug", "docs"],
+        "semver_part": "patch"
+      },
+      {
+        "labels": ["feature", "enhancement", "a-custom-label"],
+        "semver_part": "minor"
+      },
+      {
+        "labels": ["major", "breaking", "milestone"],
+        "semver_part": "major"
+      }
+    ],
+    "ignore_labels": ["no release"]
+  }

@@ -1,0 +1,51 @@
+name: build
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18.12.1]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # - name: Install Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: ${{ matrix.node }}
+
+      - uses: pnpm/action-setup@v2.0.1
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install dependencies
+        run: npm i -g @vscode/vsce && npm i
+
+      - name: Run scripts
+        run: |
+          pnpm -v
+          npm run vscode:prepublish
+          npm run vsce:package
+          # npm run vsce:publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: 'livewire-goto-updated*'
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'livewire-goto-updated*'
+          token: ${{ secrets.GITHUB_TOKEN }}
