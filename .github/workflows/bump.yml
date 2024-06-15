@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Bump version and push tag
-        uses: marier-nico/pr-bump@1.0
+        uses: marier-nico/pr-bump@v1.1.0
         with:
           configuration: '.github/workflows/pr_bump_config.json'
         env:
