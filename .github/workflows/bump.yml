@@ -15,7 +15,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check branch name
+        id: check_branch
+        run: |
+          if [[ "${{ github.head_ref }}" == "dev" || "${{ github.head_ref }}" == "develop" ]]; then
+            echo "::set-output name=release_type::prerelease"
+          elif [[ "${{ github.head_ref }}" == "main" || "${{ github.head_ref }}" == "master" ]]; then
+            echo "::set-output name=release_type::release"
+          fi
+
       - uses: undergroundwires/bump-everywhere@1.4.0
+    #   set release type to prerelease if dev or develop, release if main or master
+        with:
+            release-type: ${{ steps.check_branch.outputs.release_type }}
     #   - name: Bump version and push tag
     #     uses: marier-nico/pr-bump@v1.1.0
     #     with:
