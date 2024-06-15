@@ -15,9 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Bump version and push tag
-        uses: marier-nico/pr-bump@v1.1.0
-        with:
-          configuration: '.github/workflows/pr_bump_config.json'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: undergroundwires/bump-everywhere@1.4.0
+    #   - name: Bump version and push tag
+    #     uses: marier-nico/pr-bump@v1.1.0
+    #     with:
+    #       configuration: '.github/workflows/pr_bump_config.json'
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
