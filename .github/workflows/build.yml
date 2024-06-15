@@ -1,0 +1,60 @@
+name: build
+
+on:
+  workflow_dispatch:
+  # pull_request:
+  #   branches: ['main', 'master', 'dev', 'develop']
+  #   types: ['closed']
+  push:
+    tags: ['*']
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18.12.1]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # - name: Install Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: ${{ matrix.node }}
+
+      - uses: pnpm/action-setup@v3
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
+
+      - name: Install dependencies
+        run: npm i -g @vscode/vsce && npm i
+
+      - name: Run scripts
+        run: |
+          pnpm -v
+          npm run vscode:prepublish
+          npm run vsce:package
+          # npm run vsce:publish
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: 'livewire-goto-updated*'
+
+      # - name: Check branch name
+      #   run: echo "PRELEASE=$(if [[ '${{ github.head_ref }}' == 'dev' || '${{ github.head_ref }}' == 'develop' ]]; then echo 'true'; else echo 'false'; fi)" >> $GITHUB_ENV
+  
+
+      # - uses: ncipollo/release-action@v1
+      #   with:
+      #     artifacts: 'livewire-goto-updated*'
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     prelease: ${{ env.PRERELEASE }}

@@ -1,0 +1,36 @@
+name: Bump version on PR merge
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    # if: github.event.pull_request.merged == true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check branch name
+        id: check_branch
+        run: |
+          if [[ "${{ github.base_ref }}" == "dev" || "${{ github.base_ref }}" == "develop" ]]; then
+            echo "::set-output name=release_type::prerelease"
+          elif [[ "${{ github.base_ref }}" == "main" || "${{ github.base_ref }}" == "master" ]]; then
+            echo "::set-output name=release_type::release"
+          fi
+
+      - uses: undergroundwires/bump-everywhere@1.4.0
+    #   set release type to prerelease if dev or develop, release if main or master
+        with:
+            release-type: ${{ steps.check_branch.outputs.release_type }}
+    #   - name: Bump version and push tag
+    #     uses: marier-nico/pr-bump@v1.1.0
+    #     with:
+    #       configuration: '.github/workflows/pr_bump_config.json'
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
