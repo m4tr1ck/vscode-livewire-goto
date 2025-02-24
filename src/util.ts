@@ -17,7 +17,7 @@ export function getLivewireCacheMap(workspacePath: string | undefined): CacheMap
 
     const cacheFile = workspacePath + '/bootstrap/cache/livewire-components.php';
 
-    if (!fs.existsSync(cacheFile)) {return map;}
+    if (!fs.existsSync(cacheFile)) { return map; }
 
     const content = fs.readFileSync(cacheFile, 'utf-8');
     const matches = content.matchAll(regexCacheMap);
@@ -40,10 +40,11 @@ export function convertNamespaceToFilePath(namespace: string): string {
     return namespace + '.php';
 }
 
-export function convertToFilePath(wsPath:string, s: string): string {
-    s = (s.replace(/-./g, x=>x[1].toUpperCase())).replace(/\../g, x=>'/' + x[1].toUpperCase());
+export function convertToFilePath(wsPath: string, s: string): string {
+    s = (s.replace(/-./g, x => x[1].toUpperCase())).replace(/\../g, x => '/' + x[1].toUpperCase());
+    s = s.replace(/\/+$/, '');
     s = s[0].toUpperCase() + s.substring(1) + ".php";
-    
+
     let pathComponents = workspace.getConfiguration('livewire-goto-updated-3').pathComponents;
 
     if (!pathComponents.endsWith('/')) {
